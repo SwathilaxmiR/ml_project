@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Spam Checker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #f5f9f6;
+            padding: 40px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 24px;
+            font-size: 2.2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1b5e20;
+        }
+
+        .email-result {
+            margin-bottom: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .spam {
+            background-color: #ffebee;
+            border-left: 6px solid #c62828;
+        }
+
+        .not-spam {
+            background-color: #d0f0c0; 
+            border-left: 6px solid #2e7d32;
+        }
+        
+
+        .label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .snippet {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gmail Spam Checker</h1>
+    <form method="POST" action="/check">
+        <input type="text" name="email" placeholder="Enter Gmail ID" required>
+        <input type="number" name="count" min="1" max="50" placeholder="Number of emails to check (e.g. 5)" required>
+        <button type="submit">Check Emails</button>
+    </form>
+
+    {% if emails %}
+        {% for email in emails %}
+        <div class="email-result {% if 'Not Spam' in email.result %}not-spam{% else %}spam{% endif %}">
+            <div class="label">{{ email.result }}</div>
+            <div class="snippet">{{ email.snippet }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+</body>
+</html>
