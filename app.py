@@ -4,6 +4,7 @@ import joblib
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
+import json
 
 app = Flask(__name__)
 
@@ -21,6 +22,9 @@ def authenticate_gmail(user_email):
     if os.path.exists(token_file):
         creds = Credentials.from_authorized_user_file(token_file, SCOPES)
     else:
+        creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+        with open("credentials.json", "w") as f:
+            f.write(creds_json)
         flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
         creds = flow.run_local_server(port=0)
         with open(token_file, 'w') as token:
