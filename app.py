@@ -38,7 +38,7 @@ def authenticate_gmail(user_email):
     }
 }, SCOPES)
 
-        creds = flow.run_local_server(port=0)
+        creds = flow.run_console()
         with open(token_file, 'w') as token:
             token.write(creds.to_json())
 
