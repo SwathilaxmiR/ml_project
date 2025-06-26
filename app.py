@@ -25,7 +25,16 @@ def authenticate_gmail(user_email):
         creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
         with open("credentials.json", "w") as f:
             f.write(creds_json)
-        flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+        flow = InstalledAppFlow.from_client_config({
+    "installed": {
+        "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+        "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
+        "redirect_uris": [os.getenv("GOOGLE_REDIRECT_URI")],
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token"
+    }
+}, SCOPES)
+
         creds = flow.run_local_server(port=0)
         with open(token_file, 'w') as token:
             token.write(creds.to_json())
