@@ -22,9 +22,12 @@ def authenticate_gmail(user_email):
     if os.path.exists(token_file):
         creds = Credentials.from_authorized_user_file(token_file, SCOPES)
     else:
-        creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+        creds_json = os.getenv("GOOGLE_CREDENTIALS")
+        if creds_json is None:
+            raise RuntimeError("GOOGLE_CREDENTIALS not set in environment.")
         with open("credentials.json", "w") as f:
             f.write(creds_json)
+
         flow = InstalledAppFlow.from_client_config({
     "installed": {
         "client_id": os.getenv("GOOGLE_CLIENT_ID"),
